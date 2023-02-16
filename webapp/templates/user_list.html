@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>User List</h1>
+    <hr>
+    <table class="user_list_table">
+        <tr><th  class="user_list_cell">User Name</th>
+            <th class="user_list_cell user_list_nums">Followers</th>
+            <th class="user_list_cell user_list_nums">Posts</th>
+            <th class="user_list_cell">About User</th></tr>
+        {% for user in users %}
+            <tr class="user_list_row">
+                <td class="user_list_cell"><a href={{ url_for('user', username=user.username) }} >{{ user.username }}</a></td>
+                <td class="user_list_cell user_list_nums">{{ user.followers.count() }}</td>
+                <td class="user_list_cell user_list_nums">{{ user.user_posts().count() }}</td>
+                <td class="user_list_cell">{% if user.about_me %}
+                    {{ user.about_me }}
+                {% endif %}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

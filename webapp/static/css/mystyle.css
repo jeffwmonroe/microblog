@@ -1,0 +1,94 @@
+body {
+  background-color: whitesmoke;
+
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  color: navy;
+  margin-left: 20px;
+}
+
+.error {
+  color: red;
+  font-style: italic;
+}
+
+.blog {
+  vertical-align:center
+}
+.blogname {
+  color: purple;
+  font-style: italic;
+}
+i {
+  font-style: italic;
+}
+
+.blogpost {
+  color:green;
+}
+
+.userprofile {
+  text-align: center;
+  vertical-align: center;
+}
+
+.aboutme {
+  text-align: left;
+}
+
+h3.aboutme {
+  text-align: center;
+}
+td.avatar {
+  vertical-align: center;
+}
+
+td.aboutme {
+  padding: 10px;
+  padding-bottom: 1px;
+  padding-top: 1px;
+  padding-right: 1px;
+}
+.user_list_table {
+  border: 1px solid black;
+}
+
+.user_list_row {
+  border: 1px solid black;
+}
+
+.user_list_cell {
+  border: 0px solid black;
+}
+
+
+td.user_list_cell {
+  padding: 5px;
+}
+th.user_list_cell {
+  text-align: center;
+  padding: 5px;
+}
+
+.user_list_nums {
+  text-align: center;
+}
+
+td.blog {
+  padding: 5px;
+  padding-bottom: 1px;
+  padding-top: 1px;
+  padding-right: 1px;
+}
+
+.timestamp {
+  color: black;
+  font-style: italic;
+}
+
+.non_active_link {
+  color: gray;
+  font-style: italic;
+}

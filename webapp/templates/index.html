@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>Hi, {{ current_user.username }}!</h1>
+    {% if form %}
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.post.label }}<br>
+                {{ form.post(cols=32, rows=4) }}<br>
+                {% for error in form.post.errors %}
+                    <span class="error">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>{{ form.submit() }}</p>
+        </form>
+    {% endif %}
+    {% if check %}
+        <p>
+        {{ wtf.quick_form(check) }}
+        </p>
+    {% endif %}
+    {% for post in posts %}
+    <p>
+        {% include '_post.html' %}
+    </p>
+    {% endfor %}
+    {% if prev_url %}
+        <a href="{{ prev_url }}">Newer posts</a>
+    {% else %}
+        <span class="non_active_link">Newer Posts</span>
+    {% endif %}
+    {% if next_url %}
+        <a href="{{ next_url }}">Older posts</a>
+    {% else %}
+        <span class="non_active_link">Older Posts</span>
+    {% endif %}
+
+{% endblock %}

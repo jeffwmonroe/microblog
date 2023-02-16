@@ -1,0 +1,140 @@
+2023-02-09 10:40:41,192 ERROR: Exception on /user/jeff [GET] [in D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py:1741]
+Traceback (most recent call last):
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 2525, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 1822, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 1820, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 1796, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\webapp\routes.py", line 72, in user
+    posts = user.user_posts()
+            ^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\webapp\models.py", line 52, in user_posts
+    return own_posts.all().order_by(Post.timestamp.desc())
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'order_by'
+2023-02-09 10:41:23,422 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:51]
+2023-02-09 13:19:55,003 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:51]
+2023-02-09 13:26:08,428 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:51]
+2023-02-09 13:28:20,076 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:51]
+2023-02-09 13:30:47,373 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:51]
+2023-02-09 13:33:07,821 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:51]
+2023-02-09 13:34:11,193 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:51]
+2023-02-09 13:37:38,086 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:51]
+2023-02-09 13:39:53,936 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:51]
+2023-02-09 13:58:56,129 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:53]
+2023-02-09 14:08:43,565 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:53]
+2023-02-09 14:09:30,106 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:53]
+2023-02-09 14:09:34,506 ERROR: Exception on /login [GET] [in D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py:1741]
+Traceback (most recent call last):
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 2525, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 1822, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 1820, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 1796, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\webapp\routes.py", line 71, in login
+    return render_template('login.html', title='Sign In', form=form)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\templating.py", line 130, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\jinja2\environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\Coding\mircoblog\webapp\templates\login.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "D:\Coding\mircoblog\webapp\templates\base.html", line 34, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\webapp\templates\login.html", line 25, in block 'content'
+    <a href="{{ url_for('reset_password_request') }}">Click to Reset It</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 2031, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 2020, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\werkzeug\routing\map.py", line 917, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'reset_password_request'. Did you mean 'user_list' instead?
+2023-02-09 14:09:42,294 ERROR: Exception on /login [GET] [in D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py:1741]
+Traceback (most recent call last):
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 2525, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 1822, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 1820, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 1796, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\webapp\routes.py", line 71, in login
+    return render_template('login.html', title='Sign In', form=form)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\templating.py", line 147, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\templating.py", line 130, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\jinja2\environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\Coding\mircoblog\webapp\templates\login.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "D:\Coding\mircoblog\webapp\templates\base.html", line 34, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\webapp\templates\login.html", line 25, in block 'content'
+    <a href="{{ url_for('reset_password_request') }}">Click to Reset It</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 2031, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 2020, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\werkzeug\routing\map.py", line 917, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'reset_password_request'. Did you mean 'user_list' instead?
+2023-02-09 14:10:25,178 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:53]
+2023-02-09 14:10:56,594 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:53]
+2023-02-09 14:30:56,184 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:53]
+2023-02-09 14:55:08,459 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:53]
+2023-02-09 15:07:41,866 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:53]
+2023-02-09 15:11:46,936 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:55]
+2023-02-09 15:13:41,869 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:58]
+2023-02-09 15:15:56,860 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:58]
+2023-02-09 15:16:24,721 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:58]
+2023-02-09 15:18:22,547 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:58]
+2023-02-09 15:20:02,440 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:59]
+2023-02-09 17:34:01,810 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:59]
+2023-02-09 17:34:53,649 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:59]
+2023-02-09 17:35:05,326 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:59]
+2023-02-09 17:39:43,770 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:58]
+2023-02-09 17:42:47,727 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:60]
