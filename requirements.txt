@@ -1,0 +1,17 @@
+###### Requirements without Version Specifiers ######
+flask
+python-dotenv
+flask-wtf
+flask-sqlalchemy
+flask-migrate
+flask-login
+email-validator
+flask-mail
+pyjwt
+flask-bootstrap
+flask-moment
+flask-babel<3
+langdetect
+requests
+
+###### Requirements with Version Specifiers ######
