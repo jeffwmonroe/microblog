@@ -8,6 +8,7 @@ from webapp.models import User, Post
 from werkzeug.urls import url_parse
 from datetime import datetime
 from webapp.email import send_password_reset_email
+from flask_babel import _
 
 @webapp.route('/', methods=['GET', 'POST'])
 @webapp.route('/index', methods=['GET', 'POST'])
@@ -22,19 +23,20 @@ def index():
         post = Post(body=form.post.data, author=current_user)
         db.session.add(post)
         db.session.commit()
-        flash('Your post is now live!')
+        flash(_('Your post is now live!'))
         return redirect(url_for('index'))
     page = request.args.get('page', 1, type=int)
 
-    c_others = 1 if webapp.config['BLOG_SHOW_OTHERS'] else 1
-    others = request.args.get('others', c_others, type=int)
-    check = OthersCheckForm()
-    check.check.data = others
+    c_others = "yes" if webapp.config['BLOG_SHOW_OTHERS'] else "yes"
+    others = request.args.get('others', c_others, type=str)
+
+    # check = OthersCheckForm()
+    # check.check.data = others
 
     print(f"In index: <{page}, {others}>")
     print(type(others))
 
-    if others:
+    if others == "yes":
         posts = current_user.followed_posts().paginate(page=page,
                                                        per_page=webapp.config['POSTS_PER_PAGE'],
                                                        error_out=False)
@@ -47,11 +49,12 @@ def index():
         if posts.has_next else None
     prev_url = url_for('index', page=posts.prev_num, others=others) \
         if posts.has_prev else None
-
+    print("About to render template")
+    print(f'others = {others}')
     return render_template("index.html",
                            title='Home Page',
                            form=form,
-                           check=check,
+                           # check=check,
                            posts=posts,
                            others=others,
                            next_url=next_url,

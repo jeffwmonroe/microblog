@@ -21,5 +21,7 @@ class Config(object):
 
     BLOG_SHOW_OTHERS = False
 
+    LANGUAGES = ['en', 'es']
+
 # Pagination
     POSTS_PER_PAGE = 5

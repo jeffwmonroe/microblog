@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
 from webapp.models import User
+from flask_babel import lazy_gettext as _l
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -28,9 +29,9 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Please use a different email address.')
 
 class EditProfileForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    about_me = TextAreaField('About me', validators=[Length(min=0, max=140)])
-    submit = SubmitField('Submit')
+    username = StringField(_l('Username'), validators=[DataRequired()])
+    about_me = TextAreaField(_l('About me'), validators=[Length(min=0, max=140)])
+    submit = SubmitField(_l('Submit'))
 
     def __init__(self, original_username, *args, **kwargs):
         super(EditProfileForm, self).__init__(*args, **kwargs)
@@ -62,5 +63,5 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField('Reset Password')
 
 class OthersCheckForm(FlaskForm):
-    check = BooleanField("Display Others Posts")
+    check = BooleanField("Display Others Posts", id='others_check')
 

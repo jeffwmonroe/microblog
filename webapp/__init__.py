@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -9,7 +9,7 @@ from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 import os
-
+from flask_babel import Babel
 
 print('webapp ... initializing')
 webapp = Flask(__name__)
@@ -17,6 +17,7 @@ webapp.config.from_object(Config)
 bootstrap = Bootstrap(webapp)
 mail = Mail(webapp)
 moment = Moment(webapp)
+babel = Babel(webapp)
 
 login = LoginManager(webapp)
 login.login_view = 'login'
@@ -61,6 +62,10 @@ if not webapp.debug:
 
     webapp.logger.setLevel(logging.INFO)
     webapp.logger.info('Microblog startup')
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match( webapp.config['LANGUAGES'])
 
 from . import routes, models, errors
 

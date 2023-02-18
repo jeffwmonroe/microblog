@@ -1,6 +1,32 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
+{% block scripts %}
+    <script>
+
+        function testFunc() {
+            let val = document.getElementById("others_check").checked;
+            if (val){
+               /// document.getElementById("mytext").innerHTML = "The box is checked: " + val;
+                val = "yes"
+            } else {
+               // document.getElementById("mytext").innerHTML = "The box is not checked: " + val;
+                val = "no";
+            }
+            let page_url = new URL(window.location);
+            page = page_url.searchParams.get("page");
+            if ( !page ) {
+                page = 1
+            }
+            let myurl = new URL("http://127.0.0.1:5000/index");
+            myurl.searchParams.append("others", val)
+            myurl.searchParams.append("page", page)
+
+            window.location = myurl;
+        }
+    </script>
+{% endblock %}
+
 {% block app_content %}
     <h1>Hi, {{ current_user.username }}!</h1>
     {% if form %}
@@ -16,10 +42,17 @@
             <p>{{ form.submit() }}</p>
         </form>
     {% endif %}
-    {% if check %}
-        <p>
-        {{ wtf.quick_form(check) }}
-        </p>
+
+    {% if others %}
+        <div class="checkbox">
+            <label>
+                {% if others == "yes" %}
+                    <input id="others_check" type="checkbox" onclick="testFunc()" checked>  Display Other's Posts
+                {% else %}
+                    <input id="others_check" type="checkbox" onclick="testFunc()">  Display Other's Posts
+                {% endif %}
+            </label>
+        </div>
     {% endif %}
     {% for post in posts %}
     <p>
@@ -38,3 +71,4 @@
     {% endif %}
 
 {% endblock %}
+
