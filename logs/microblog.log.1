@@ -1,8 +1,23 @@
-2023-02-09 17:45:03,617 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:60]
-2023-02-09 17:45:45,317 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:60]
-2023-02-09 17:50:32,084 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:60]
-2023-02-09 19:38:11,217 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-09 19:38:15,887 ERROR: Exception on /index [GET] [in D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py:1741]
+2023-02-13 10:56:32,731 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-13 10:59:50,771 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-13 11:02:25,762 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-13 11:02:48,673 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-13 11:22:21,580 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-13 11:24:23,904 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-13 11:25:26,888 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-13 11:30:12,355 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-13 11:34:05,867 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-13 11:35:04,366 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-13 11:37:48,254 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-13 11:39:17,896 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-13 11:40:18,828 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-14 13:57:45,100 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-14 13:58:53,947 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-14 14:08:10,516 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-14 14:09:49,468 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-14 14:11:34,885 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-14 14:20:45,338 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-14 14:20:47,908 ERROR: Exception on /index [GET] [in D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py:1741]
 Traceback (most recent call last):
   File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 2525, in wsgi_app
     response = self.full_dispatch_request()
@@ -19,7 +34,29 @@ Traceback (most recent call last):
   File "D:\Coding\mircoblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Coding\mircoblog\webapp\routes.py", line 31, in index
+  File "D:\Coding\mircoblog\webapp\routes.py", line 16, in index
+    check = OthersCheck()
+            ^^^^^^^^^^^
+NameError: name 'OthersCheck' is not defined
+2023-02-14 14:23:04,407 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-14 14:23:07,403 ERROR: Exception on /index [GET] [in D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py:1741]
+Traceback (most recent call last):
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 2525, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 1822, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 1820, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 1796, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\webapp\routes.py", line 49, in index
     return render_template("index.html",
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\templating.py", line 147, in render_template
@@ -43,23 +80,24 @@ Traceback (most recent call last):
     {%- block html %}
   File "D:\Coding\mircoblog\venv\Lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block 'html'
     {% block body -%}
-  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 21, in block 'body'
-    {% block navbar %}
-  File "D:\Coding\mircoblog\webapp\templates\base.html", line 27, in block 'navbar'
-    <li><a href="{{ url_for('index') }}">{{ _('Home') }}</a></li>
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block 'body'
+    {% block content -%}
+  File "D:\Coding\mircoblog\webapp\templates\base.html", line 65, in block 'content'
+    {% block app_content %}{% endblock %}
     ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Coding\mircoblog\venv\Lib\site-packages\jinja2\utils.py", line 83, in from_obj
-    if hasattr(obj, "jinja_pass_arg"):
-       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-jinja2.exceptions.UndefinedError: '_' is undefined
-2023-02-09 19:51:58,991 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-09 19:56:52,177 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-09 20:01:13,735 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-09 20:05:42,447 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-09 20:09:10,073 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-09 20:09:48,422 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-09 20:12:32,060 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-09 20:12:35,953 ERROR: Exception on /user_list [GET] [in D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py:1741]
+  File "D:\Coding\mircoblog\webapp\templates\index.html", line 20, in block 'app_content'
+    {{ wtf.quick_form(check) }}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Coding\mircoblog\venv\Lib\site-packages\jinja2\environment.py", line 485, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'wtf' is undefined
+2023-02-14 14:23:47,701 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-14 14:30:29,605 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-14 14:30:49,682 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-14 14:31:51,091 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-14 14:32:36,054 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-14 14:32:38,745 ERROR: Exception on /index [GET] [in D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py:1741]
 Traceback (most recent call last):
   File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 2525, in wsgi_app
     response = self.full_dispatch_request()
@@ -76,62 +114,25 @@ Traceback (most recent call last):
   File "D:\Coding\mircoblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Coding\mircoblog\webapp\routes.py", line 144, in user_list
-    return render_template('user_list.html', users=users)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\templating.py", line 147, in render_template
-    return _render(app, template, context)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\templating.py", line 130, in _render
-    rv = template.render(context)
-         ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Coding\mircoblog\venv\Lib\site-packages\jinja2\environment.py", line 1301, in render
-    self.environment.handle_exception()
-  File "D:\Coding\mircoblog\venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "D:\Coding\mircoblog\webapp\templates\user_list.html", line 1, in top-level template code
-    {% extends "base.html" %}
-  File "D:\Coding\mircoblog\webapp\templates\base.html", line 1, in top-level template code
-    {% extends 'bootstrap/base.html' %}
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
-    {% block doc -%}
-  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block 'doc'
-    {%- block html %}
-  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 6, in block 'html'
-    {%- block head %}
-  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 13, in block 'head'
-    {%- block styles %}
-  File "D:\Coding\mircoblog\webapp\templates\base.html", line 5, in block 'styles'
-    <link rel="stylesheet" href="{{url_for('static/css', filename='mystyle.css')}}">
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 2031, in url_for
-    return self.handle_url_build_error(error, endpoint, values)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Coding\mircoblog\venv\Lib\site-packages\flask\app.py", line 2020, in url_for
-    rv = url_adapter.build(  # type: ignore[union-attr]
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Coding\mircoblog\venv\Lib\site-packages\werkzeug\routing\map.py", line 917, in build
-    raise BuildError(endpoint, values, method, self)
-werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'static/css' with values ['filename']. Did you mean 'static' instead?
-2023-02-09 20:12:52,321 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-09 20:13:47,474 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-09 20:14:15,551 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-09 20:15:54,914 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-09 20:16:11,487 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-09 20:16:44,113 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-09 20:17:37,801 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-10 05:06:04,266 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-10 05:09:50,512 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-10 05:10:18,995 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-10 05:11:21,934 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-10 05:12:39,275 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-10 05:13:22,220 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-10 05:14:41,053 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-10 05:17:07,553 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-10 05:17:38,309 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-10 05:18:46,391 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-10 05:19:52,027 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-10 05:20:14,298 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-10 05:22:58,429 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
-2023-02-10 05:23:32,979 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:61]
+  File "D:\Coding\mircoblog\webapp\routes.py", line 32, in index
+    check.data = True
+    ^^^^^^^^^^
+AttributeError: property 'data' of 'OthersCheckForm' object has no setter
+2023-02-14 14:34:11,046 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-14 14:34:30,663 INFO: Microblog startup [in D:\Coding\mircoblog\webapp\__init__.py:63]
+2023-02-15 20:33:27,706 INFO: Microblog startup [in D:\Coding\microblog\webapp\__init__.py:63]
+2023-02-15 20:35:30,302 INFO: Microblog startup [in D:\Coding\microblog\webapp\__init__.py:63]
+2023-02-15 20:46:17,511 INFO: Microblog startup [in D:\Coding\microblog\webapp\__init__.py:63]
+2023-02-15 20:52:29,009 INFO: Microblog startup [in D:\Coding\microblog\webapp\__init__.py:63]
+2023-02-15 21:03:59,831 INFO: Microblog startup [in D:\Coding\microblog\webapp\__init__.py:63]
+2023-02-15 21:04:31,537 INFO: Microblog startup [in D:\Coding\microblog\webapp\__init__.py:63]
+2023-02-16 20:29:12,342 INFO: Microblog startup [in D:\Coding\microblog\webapp\__init__.py:63]
+2023-02-17 03:02:12,999 INFO: Microblog startup [in D:\Coding\microblog\webapp\__init__.py:63]
+2023-02-17 03:02:18,181 INFO: Microblog startup [in D:\Coding\microblog\webapp\__init__.py:63]
+2023-02-17 15:45:58,700 INFO: Microblog startup [in D:\Coding\microblog\webapp\__init__.py:64]
+2023-02-17 16:24:00,252 INFO: Microblog startup [in D:\Coding\microblog\webapp\__init__.py:64]
+2023-02-17 16:58:18,582 INFO: Microblog startup [in D:\Coding\microblog\webapp\__init__.py:64]
+2023-02-17 16:58:26,783 INFO: Microblog startup [in D:\Coding\microblog\webapp\__init__.py:64]
+2023-02-17 16:58:35,406 INFO: Microblog startup [in D:\Coding\microblog\webapp\__init__.py:64]
+2023-02-17 16:59:51,692 INFO: Microblog startup [in D:\Coding\microblog\webapp\__init__.py:64]
+2023-02-17 16:59:58,367 INFO: Microblog startup [in D:\Coding\microblog\webapp\__init__.py:64]

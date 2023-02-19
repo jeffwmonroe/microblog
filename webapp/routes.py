@@ -10,12 +10,32 @@ from datetime import datetime
 from webapp.email import send_password_reset_email
 from flask_babel import _
 
+def get_page_others():
+    page = request.args.get('page', 1, type=int)
+    c_others = "yes" if webapp.config['BLOG_SHOW_OTHERS'] else "yes"
+    others = request.args.get('others', c_others, type=str)
+
+    if others == "yes":
+        max_pages = round(0.5 + current_user.followed_posts().count() / webapp.config['POSTS_PER_PAGE'])
+        if page > max_pages:
+            page = max_pages
+        posts = current_user.followed_posts().paginate(page=page,
+                                                       per_page=webapp.config['POSTS_PER_PAGE'],
+                                                       error_out=False)
+    else:
+        max_pages = round( 0.5 + current_user.user_posts().count() / webapp.config['POSTS_PER_PAGE'])
+        if page > max_pages:
+            page = max_pages
+        posts = current_user.user_posts().paginate(page=page,
+                                                   per_page=webapp.config['POSTS_PER_PAGE'],
+                                                   error_out=False)
+    return [page, others, posts ]
+
 @webapp.route('/', methods=['GET', 'POST'])
 @webapp.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
     form = PostForm()
-
 
     print("form =", id(form), id(form.post))
     print(f"post.data = {form.post.data}")
@@ -25,40 +45,16 @@ def index():
         db.session.commit()
         flash(_('Your post is now live!'))
         return redirect(url_for('index'))
-    page = request.args.get('page', 1, type=int)
 
-    c_others = "yes" if webapp.config['BLOG_SHOW_OTHERS'] else "yes"
-    others = request.args.get('others', c_others, type=str)
+    page, others, posts = get_page_others()
 
-    # check = OthersCheckForm()
-    # check.check.data = others
-
-    print(f"In index: <{page}, {others}>")
-    print(type(others))
-
-    if others == "yes":
-        posts = current_user.followed_posts().paginate(page=page,
-                                                       per_page=webapp.config['POSTS_PER_PAGE'],
-                                                       error_out=False)
-    else:
-        posts = current_user.user_posts().paginate(page=page,
-                                                   per_page=webapp.config['POSTS_PER_PAGE'],
-                                                   error_out=False)
-
-    next_url = url_for('index', page=posts.next_num, others=others) \
-        if posts.has_next else None
-    prev_url = url_for('index', page=posts.prev_num, others=others) \
-        if posts.has_prev else None
-    print("About to render template")
-    print(f'others = {others}')
     return render_template("index.html",
                            title='Home Page',
                            form=form,
                            # check=check,
+                           page=page,
                            posts=posts,
-                           others=others,
-                           next_url=next_url,
-                           prev_url=prev_url)
+                           others=others)
 
 @webapp.route('/explore')
 @login_required
@@ -236,3 +232,14 @@ def reset_password(token):
         flash('Your password has been reset.')
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
+
+@webapp.route('/post_table', methods=['GET'])
+@login_required
+def get_post_table():
+    print('Chilling in get_post table')
+    page, others, posts = get_page_others()
+    print(f'others={others}, page={page}')
+    temp_val = render_template('_post_table.html', posts=posts)
+    # print("temp_val = ", temp_val)
+    # print("type(val)", type(temp_val))
+    return temp_val

@@ -2,27 +2,100 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block scripts %}
-    <script>
 
-        function testFunc() {
-            let val = document.getElementById("others_check").checked;
-            if (val){
-               /// document.getElementById("mytext").innerHTML = "The box is checked: " + val;
-                val = "yes"
-            } else {
-               // document.getElementById("mytext").innerHTML = "The box is not checked: " + val;
-                val = "no";
-            }
+    <script>
+        window.addEventListener('load', function () {
+            //alert("It's loaded!")
+            const main = document.querySelector('main');
             let page_url = new URL(window.location);
-            page = page_url.searchParams.get("page");
-            if ( !page ) {
-                page = 1
+            let page = page_url.searchParams.get("page");
+            if (!page) {
+                page = 1;
             }
-            let myurl = new URL("http://127.0.0.1:5000/index");
-            myurl.searchParams.append("others", val)
+
+            let others = page_url.searchParams.get("others");
+            if (!others) {
+                let val = document.getElementById("others_check").checked;
+                if (val){
+                    others="yes"
+                } else {
+                    others="no"
+                }
+            }
+
+            checkitems();
+            document.getElementById("debug").innerHTML = "In the setup function page=" + page
+
+            sessionStorage.setItem("page", page)
+            sessionStorage.setItem("others", others)
+
+            document.getElementById("debug").innerHTML = "debug message " + page + " : " + others
+            checkitems();
+
+            //page + " " + others
+        })
+
+        function checkitems() {
+            let page = Number(sessionStorage.getItem("page"));
+            if (page == 1) {
+                document.getElementById("newer_button").disabled=true;
+            } else {
+                document.getElementById("newer_button").disabled=false;
+            }
+        }
+        async function loadPosts(page, others) {
+            let myurl = new URL("http://127.0.0.1:5000/post_table");
+            myurl.searchParams.append("others", others)
             myurl.searchParams.append("page", page)
 
-            window.location = myurl;
+            //document.getElementById("debug").innerHTML="middle of load posts"
+
+            let myObject = await fetch(myurl);
+            let myText = await myObject.text();
+            document.getElementById("post_table").innerHTML = myText
+        }
+
+        function othersCheckCallback() {
+            const main = document.querySelector('main');
+            let val = document.getElementById("others_check").checked;
+            let others="no"
+            if (val){
+                document.getElementById("message").innerHTML = "Displaying posts for all users";
+                others = "yes";
+            } else {
+                document.getElementById("message").innerHTML = "Displaying user posts:";
+                others = "no";
+            }
+            sessionStorage.setItem("others", others);
+            let page = sessionStorage.getItem("page");
+            document.getElementById("debug").innerHTML = "callback "
+
+            loadPosts(page, others)
+            checkitems();
+        }
+        function newerPosts(){
+            let page = Number(sessionStorage.getItem("page"));
+            let others = sessionStorage.getItem("others");
+            if (page > 1) {
+                page = page - 1
+            }            document.getElementById("debug").innerHTML="newer posts " + page + ":" + others
+
+            sessionStorage.setItem("page", page);
+            loadPosts(page, others)
+            checkitems();
+        }
+        function olderPosts(){
+            let page = Number(sessionStorage.getItem("page"));
+            let others = sessionStorage.getItem("others");
+
+            page = page + 1
+            checkitems();
+            document.getElementById("debug").innerHTML="newer posts " + page + ":" + others
+            sessionStorage.setItem("page", page);
+            //document.getElementById("debug").innerHTML="older posts"
+
+            loadPosts(page, others)
+            checkitems();
         }
     </script>
 {% endblock %}
@@ -47,28 +120,25 @@
         <div class="checkbox">
             <label>
                 {% if others == "yes" %}
-                    <input id="others_check" type="checkbox" onclick="testFunc()" checked>  Display Other's Posts
+                    <input id="others_check" type="checkbox" onclick="othersCheckCallback()" checked>  Display Other's Posts
                 {% else %}
-                    <input id="others_check" type="checkbox" onclick="testFunc()">  Display Other's Posts
+                    <input id="others_check" type="checkbox" onclick="othersCheckCallback()">  Display Other's Posts (blank)
                 {% endif %}
             </label>
         </div>
-    {% endif %}
-    {% for post in posts %}
-    <p>
-        {% include '_post.html' %}
-    </p>
-    {% endfor %}
-    {% if prev_url %}
-        <a href="{{ prev_url }}">Newer posts</a>
-    {% else %}
-        <span class="non_active_link">Newer Posts</span>
-    {% endif %}
-    {% if next_url %}
-        <a href="{{ next_url }}">Older posts</a>
-    {% else %}
-        <span class="non_active_link">Older Posts</span>
+        <p id="message"> Current User = {{ current_user.username }}</p>
+        <p id="debug"> This is used for debug messages</p>
     {% endif %}
 
+    <table id="post_table" class="blog">
+    {% for post in posts %}
+
+        {% include '_post.html' %}
+
+    {% endfor %}
+    </table>
+    <br>
+    <button class="newold_button" id="newer_button" onclick="newerPosts()">Newer Posts</button>
+    <button class="newold_button" id="older_button" onclick="olderPosts()">Older Posts</button>
 {% endblock %}
 

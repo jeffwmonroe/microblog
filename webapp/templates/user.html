@@ -14,10 +14,11 @@
 
     <hr>
     <p>Posts by <span class="blogname"> {{ user.username }}:</span></p>
-    {% for post in posts %}
-        {% include '_post.html' %}
-    {% endfor %}
-
+    <table>
+        {% for post in posts %}
+            {% include '_post.html' %}
+        {% endfor %}
+    </table>
     {% if prev_url %}
         <a href="{{ prev_url }}">Newer posts</a>
     {% endif %}

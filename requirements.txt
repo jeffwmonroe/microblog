@@ -13,5 +13,6 @@ flask-moment
 flask-babel<3
 langdetect
 requests
+jupyter
 
 ###### Requirements with Version Specifiers ######

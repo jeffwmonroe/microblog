@@ -24,7 +24,17 @@ h1 {
 i {
   font-style: italic;
 }
+table.blog {
+ /* border: 5px solid; */
+}
+tr.blog {
+   border: inherit;
+}
 
+td.blog {
+  padding: 5px;
+  padding-right: 10px;
+}
 .blogpost {
   color:green;
 }
@@ -76,12 +86,6 @@ th.user_list_cell {
   text-align: center;
 }
 
-td.blog {
-  padding: 5px;
-  padding-bottom: 1px;
-  padding-top: 1px;
-  padding-right: 1px;
-}
 
 .timestamp {
   color: black;
