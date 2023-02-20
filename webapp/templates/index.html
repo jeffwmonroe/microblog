@@ -4,9 +4,8 @@
 {% block scripts %}
 
     <script>
+
         window.addEventListener('load', function () {
-            //alert("It's loaded!")
-            const main = document.querySelector('main');
             let page_url = new URL(window.location);
             let page = page_url.searchParams.get("page");
             if (!page) {
@@ -15,12 +14,12 @@
 
             let others = page_url.searchParams.get("others");
             if (!others) {
-                let val = document.getElementById("others_check").checked;
-                if (val){
-                    others="yes"
-                } else {
-                    others="no"
-                }
+                others="yes"
+            }
+
+            let max_pages = Number( {{ max_pages }} );
+            if (!max_pages) {
+                max_pages= 1
             }
 
             checkitems();
@@ -28,22 +27,43 @@
 
             sessionStorage.setItem("page", page)
             sessionStorage.setItem("others", others)
+            sessionStorage.setItem("max_pages", max_pages)
 
-            document.getElementById("debug").innerHTML = "debug message " + page + " : " + others
             checkitems();
 
+            console.log("load page: " + page + " : " + others + " : " + max_pages)
             //page + " " + others
         })
 
         function checkitems() {
             let page = Number(sessionStorage.getItem("page"));
-            if (page == 1) {
+            let others = sessionStorage.getItem("others");
+            let max_pages = Number( sessionStorage.getItem("max_pages") );
+
+            if ( page > max_pages ) {
+                page = max_pages;
+                sessionStorage.setItem("page", page)
+            }
+            if ( page === 1 ) {
                 document.getElementById("newer_button").disabled=true;
             } else {
                 document.getElementById("newer_button").disabled=false;
             }
+            if ( others === "yes" ) {
+                document.getElementById("others_check").checked = true;
+            } else {
+                document.getElementById("others_check").checked = false;
+            }
+            if ( page === max_pages ){
+                 document.getElementById("older_button").disabled=true;
+            } else {
+                document.getElementById("older_button").disabled=false;
+            }
+            console.log("check item " + page + " : " + others + " : " + max_pages)
+            document.getElementById("message").innerHTML="check item: " + page + " : " + others + " : " + max_pages
         }
         async function loadPosts(page, others) {
+            console.log("Loading posts")
             let myurl = new URL("http://127.0.0.1:5000/post_table");
             myurl.searchParams.append("others", others)
             myurl.searchParams.append("page", page)
@@ -51,12 +71,21 @@
             //document.getElementById("debug").innerHTML="middle of load posts"
 
             let myObject = await fetch(myurl);
-            let myText = await myObject.text();
-            document.getElementById("post_table").innerHTML = myText
+            let myTextJSON = await myObject.text();
+
+            let myDict = JSON.parse(myTextJSON)
+            max_pages = myDict['max_pages']
+            my_html = myDict['html']
+
+            sessionStorage.setItem("max_pages", max_pages)
+
+            console.log("   console log: max_pages = " + max_pages )
+            document.getElementById("post_table").innerHTML = my_html
+            checkitems()
         }
 
         function othersCheckCallback() {
-            const main = document.querySelector('main');
+
             let val = document.getElementById("others_check").checked;
             let others="no"
             if (val){
@@ -71,31 +100,30 @@
             document.getElementById("debug").innerHTML = "callback "
 
             loadPosts(page, others)
-            checkitems();
+
         }
         function newerPosts(){
             let page = Number(sessionStorage.getItem("page"));
             let others = sessionStorage.getItem("others");
             if (page > 1) {
                 page = page - 1
-            }            document.getElementById("debug").innerHTML="newer posts " + page + ":" + others
-
+            }
             sessionStorage.setItem("page", page);
             loadPosts(page, others)
-            checkitems();
+
         }
         function olderPosts(){
             let page = Number(sessionStorage.getItem("page"));
             let others = sessionStorage.getItem("others");
 
             page = page + 1
-            checkitems();
-            document.getElementById("debug").innerHTML="newer posts " + page + ":" + others
-            sessionStorage.setItem("page", page);
-            //document.getElementById("debug").innerHTML="older posts"
 
+            sessionStorage.setItem("page", page);
+
+            console.log("older posts")
             loadPosts(page, others)
-            checkitems();
+            console.log("   olderPosts: after load posts")
+
         }
     </script>
 {% endblock %}
@@ -119,26 +147,18 @@
     {% if others %}
         <div class="checkbox">
             <label>
-                {% if others == "yes" %}
-                    <input id="others_check" type="checkbox" onclick="othersCheckCallback()" checked>  Display Other's Posts
-                {% else %}
-                    <input id="others_check" type="checkbox" onclick="othersCheckCallback()">  Display Other's Posts (blank)
-                {% endif %}
+                <input id="others_check" type="checkbox" onclick="othersCheckCallback()">  Display Other's Posts
             </label>
         </div>
         <p id="message"> Current User = {{ current_user.username }}</p>
         <p id="debug"> This is used for debug messages</p>
     {% endif %}
 
-    <table id="post_table" class="blog">
-    {% for post in posts %}
+    {% include '_post_table.html' %}
 
-        {% include '_post.html' %}
-
-    {% endfor %}
-    </table>
     <br>
     <button class="newold_button" id="newer_button" onclick="newerPosts()">Newer Posts</button>
     <button class="newold_button" id="older_button" onclick="olderPosts()">Older Posts</button>
+
 {% endblock %}
 

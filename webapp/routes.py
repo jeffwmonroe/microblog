@@ -1,8 +1,8 @@
 from webapp import db, webapp
 from flask import render_template, flash, redirect, url_for, request
 from webapp.forms import LoginForm, RegistrationForm, EditProfileForm, \
-    EmptyForm, PostForm, ResetPasswordRequestForm, ResetPasswordForm, \
-    OthersCheckForm
+    EmptyForm, PostForm, ResetPasswordRequestForm, ResetPasswordForm
+
 from flask_login import logout_user, current_user, login_user, login_required
 from webapp.models import User, Post
 from werkzeug.urls import url_parse
@@ -29,7 +29,7 @@ def get_page_others():
         posts = current_user.user_posts().paginate(page=page,
                                                    per_page=webapp.config['POSTS_PER_PAGE'],
                                                    error_out=False)
-    return [page, others, posts ]
+    return [page, others, max_pages, posts ]
 
 @webapp.route('/', methods=['GET', 'POST'])
 @webapp.route('/index', methods=['GET', 'POST'])
@@ -46,7 +46,7 @@ def index():
         flash(_('Your post is now live!'))
         return redirect(url_for('index'))
 
-    page, others, posts = get_page_others()
+    page, others, max_pages, posts = get_page_others()
 
     return render_template("index.html",
                            title='Home Page',
@@ -54,7 +54,8 @@ def index():
                            # check=check,
                            page=page,
                            posts=posts,
-                           others=others)
+                           others=others,
+                           max_pages = max_pages)
 
 @webapp.route('/explore')
 @login_required
@@ -237,9 +238,11 @@ def reset_password(token):
 @login_required
 def get_post_table():
     print('Chilling in get_post table')
-    page, others, posts = get_page_others()
-    print(f'others={others}, page={page}')
-    temp_val = render_template('_post_table.html', posts=posts)
-    # print("temp_val = ", temp_val)
-    # print("type(val)", type(temp_val))
-    return temp_val
+    page, others, max_pages, posts = get_page_others()
+    print(f'    in python: others={others}, page={page}')
+    html = render_template('_post_table.html', posts=posts)
+
+    ret_val = { 'html' : html,
+                'max_pages': max_pages }
+
+    return ret_val
