@@ -10,32 +10,38 @@ from datetime import datetime
 from webapp.email import send_password_reset_email
 from flask_babel import _
 
-def get_page_others():
-    page = request.args.get('page', 1, type=int)
-    c_others = "yes" if webapp.config['BLOG_SHOW_OTHERS'] else "yes"
-    others = request.args.get('others', c_others, type=str)
+def get_page_list( user=None, others="yes", page=1 ):
+    print("get_page_list:")
+    print(f"   user={user}")
+    print(f"   others={others}")
+    print(f"   page={page}")
 
-    if others == "yes":
-        max_pages = round(0.5 + current_user.followed_posts().count() / webapp.config['POSTS_PER_PAGE'])
-        if page > max_pages:
-            page = max_pages
-        posts = current_user.followed_posts().paginate(page=page,
-                                                       per_page=webapp.config['POSTS_PER_PAGE'],
-                                                       error_out=False)
-    elif others == "all":
-        max_pages = round(0.5 + Post.query.count() / webapp.config['POSTS_PER_PAGE'])
+    if others == "all" or user is None:
+        print("   user is None case!")
+        max_pages = (Post.query.count() + webapp.config['POSTS_PER_PAGE'] - 1) // webapp.config['POSTS_PER_PAGE']
         if page > max_pages:
             page = max_pages
         posts = Post.query.order_by(Post.timestamp.desc()).paginate(page=page,
-                                                       per_page=webapp.config['POSTS_PER_PAGE'],
-                                                       error_out=False)
-    else:
-        max_pages = round( 0.5 + current_user.user_posts().count() / webapp.config['POSTS_PER_PAGE'])
+                                                                    per_page=webapp.config['POSTS_PER_PAGE'],
+                                                                    error_out=False)
+    elif others == "yes":
+        print("   others = yes case")
+        max_pages = ( user.followed_posts().count() +
+                      webapp.config['POSTS_PER_PAGE'] - 1 ) // webapp.config['POSTS_PER_PAGE']
         if page > max_pages:
             page = max_pages
-        posts = current_user.user_posts().paginate(page=page,
-                                                   per_page=webapp.config['POSTS_PER_PAGE'],
-                                                   error_out=False)
+        posts = user.followed_posts().paginate(page=page,
+                                               per_page=webapp.config['POSTS_PER_PAGE'],
+                                               error_out=False)
+    else:
+        print("   others = no case")
+        max_pages = (user.user_posts().count() +
+                     webapp.config['POSTS_PER_PAGE'] - 1) // webapp.config['POSTS_PER_PAGE']
+        if page > max_pages:
+            page = max_pages
+        posts = user.user_posts().paginate(page=page,
+                                           per_page=webapp.config['POSTS_PER_PAGE'],
+                                           error_out=False)
     return [page, others, max_pages, posts ]
 
 @webapp.route('/', methods=['GET', 'POST'])
@@ -53,22 +59,27 @@ def index():
         flash(_('Your post is now live!'))
         return redirect(url_for('index'))
 
-    page, others, max_pages, posts = get_page_others()
+    page, others, max_pages, posts = get_page_list( user= current_user,
+                                                    others="yes",
+                                                    page=1 )
+
 
     return render_template("index.html",
                            title='Home Page',
+                           user=current_user,
                            form=form,
-                           # check=check,
                            page=page,
                            posts=posts,
                            others=others,
                            max_pages = max_pages)
 
 @webapp.route('/explore')
+
 @login_required
 def explore():
-
-    page, others, max_pages, posts = get_page_others()
+    page, others, max_pages, posts = get_page_list( user=None,
+                                                    others="all",
+                                                    page=1)
     return render_template('index.html',
                            title='Explore',
                            posts=posts,
@@ -119,7 +130,9 @@ def register():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
 
-    page, others, max_pages, posts = get_page_others()
+    page, others, max_pages, posts = get_page_list( user=user,
+                                                    others="no",
+                                                    page=1)
     form = EmptyForm()
     return render_template('user.html',
                            user=user,
@@ -229,8 +242,17 @@ def reset_password(token):
 @login_required
 def get_post_table():
     print('Chilling in get_post table')
-    page, others, max_pages, posts = get_page_others()
-    print(f'    in python: others={others}, page={page}')
+    page = request.args.get('page', 1, type=int)
+    # c_others = "yes" if webapp.config['BLOG_SHOW_OTHERS'] else "no"
+    others = request.args.get('others', "yes", type=str)
+    username = request.args.get('username', None, type=str)
+
+    user = User.query.filter_by(username=username).first()
+    print(f"   user={user}")
+    page, others, max_pages, posts = get_page_list( user=user,
+                                                    page=page,
+                                                    others=others)
+    print(f'    in python: others={others}, page={page}, max_pages = {max_pages}')
     html = render_template('_post_table.html', posts=posts)
 
     ret_val = { 'html' : html,

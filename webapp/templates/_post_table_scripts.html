@@ -20,14 +20,24 @@
                 console.log("    no max pages found")
                 max_pages= 1
             }
+            {% if user %}
+                let username = String( '{{ user.username }}' );
+                if (!username) {
+                    console.log("    no user found")
+                    username= None
+                }
+            {% else %}
+                username=""
+            {% endif %}
 
             sessionStorage.setItem("page", page)
             sessionStorage.setItem("others", others)
             sessionStorage.setItem("max_pages", max_pages)
+            sessionStorage.setItem("username", username)
 
             checkitems();
 
-            console.log("   end of load page: " + page + " : " + others + " : " + max_pages)
+            console.log("   end of load page: (username= " + username, + "page= " + page + "others= " + others + "maxpages= " + max_pages +")")
 
         })
 
@@ -61,9 +71,12 @@
         }
         async function loadPosts(page, others) {
             console.log("Loading posts")
+            username = sessionStorage.getItem("username")
+
             let myurl = new URL("http://127.0.0.1:5000/post_table");
             myurl.searchParams.append("others", others)
             myurl.searchParams.append("page", page)
+            myurl.searchParams.append("username", username)
 
             let myObject = await fetch(myurl);
             let myTextJSON = await myObject.text();
