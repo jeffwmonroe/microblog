@@ -1,0 +1,114 @@
+{% block scripts %}
+    <script>
+        window.addEventListener('load', function () {
+            console.log("window load function:")
+            let page_url = new URL(window.location);
+            let page = Number({{ page }});
+            if (!page) {
+                console.log("    no page found")
+                page = 1;
+            }
+
+            let others = String( '{{ others }}' );
+            if (!others) {
+                console.log("    no others found")
+                others="no"
+            }
+
+            let max_pages = Number( {{ max_pages }} );
+            if (!max_pages) {
+                console.log("    no max pages found")
+                max_pages= 1
+            }
+
+            sessionStorage.setItem("page", page)
+            sessionStorage.setItem("others", others)
+            sessionStorage.setItem("max_pages", max_pages)
+
+            checkitems();
+
+            console.log("   end of load page: " + page + " : " + others + " : " + max_pages)
+
+        })
+
+        function checkitems() {
+            let page = Number(sessionStorage.getItem("page"));
+            let others = sessionStorage.getItem("others");
+            let max_pages = Number( sessionStorage.getItem("max_pages") );
+
+            if ( page > max_pages ) {
+                page = max_pages;
+                sessionStorage.setItem("page", page)
+            }
+            if ( page === 1 ) {
+                document.getElementById("newer_button").disabled=true;
+            } else {
+                document.getElementById("newer_button").disabled=false;
+            }
+            if (document.getElementById("others_check")) {
+                if (others === "yes") {
+                    document.getElementById("others_check").checked = true;
+                } else {
+                    document.getElementById("others_check").checked = false;
+                }
+            }
+            if ( page === max_pages ){
+                 document.getElementById("older_button").disabled=true;
+            } else {
+                document.getElementById("older_button").disabled=false;
+            }
+            console.log("check item " + page + " : " + others + " : " + max_pages)
+        }
+        async function loadPosts(page, others) {
+            console.log("Loading posts")
+            let myurl = new URL("http://127.0.0.1:5000/post_table");
+            myurl.searchParams.append("others", others)
+            myurl.searchParams.append("page", page)
+
+            let myObject = await fetch(myurl);
+            let myTextJSON = await myObject.text();
+
+            let myDict = JSON.parse(myTextJSON)
+            max_pages = myDict['max_pages']
+            my_html = myDict['html']
+
+            sessionStorage.setItem("max_pages", max_pages)
+
+            console.log("   console log: max_pages = " + max_pages )
+            document.getElementById("post_table").innerHTML = my_html
+            checkitems()
+        }
+
+        function othersCheckCallback() {
+            let val = document.getElementById("others_check").checked;
+            let others="no"
+            if (val){
+                others = "yes";
+            } else {
+                others = "no";
+            }
+            sessionStorage.setItem("others", others);
+            let page = sessionStorage.getItem("page");
+            loadPosts(page, others)
+        }
+        function newerPosts(){
+            let page = Number(sessionStorage.getItem("page"));
+            let others = sessionStorage.getItem("others");
+            if (page > 1) {
+                page = page - 1
+            }
+            sessionStorage.setItem("page", page);
+            loadPosts(page, others)
+
+        }
+        function olderPosts(){
+            let page = Number(sessionStorage.getItem("page"));
+            let others = sessionStorage.getItem("others");
+            page = page + 1
+            sessionStorage.setItem("page", page);
+            console.log("older posts")
+            loadPosts(page, others)
+            console.log("   olderPosts: after load posts")
+        }
+    </script>
+{% endblock %}

@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% include '_post_table_scripts.html' %}
+
 {% block app_content %}
     <table>
         <tr class="userprofile">
@@ -14,17 +16,11 @@
 
     <hr>
     <p>Posts by <span class="blogname"> {{ user.username }}:</span></p>
-    <table>
-        {% for post in posts %}
-            {% include '_post.html' %}
-        {% endfor %}
-    </table>
-    {% if prev_url %}
-        <a href="{{ prev_url }}">Newer posts</a>
-    {% endif %}
-    {% if next_url %}
-        <a href="{{ next_url }}">Older posts</a>
-    {% endif %}
+
+    {% include '_post_table.html' %}
+    <br>
+    {% include '_new_old_buttons.html' %}
+
 
     {% if user == current_user %}
         <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
