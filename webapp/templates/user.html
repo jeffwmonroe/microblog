@@ -5,7 +5,7 @@
 {% block app_content %}
     <table>
         <tr class="userprofile">
-            <td class="aboutme avatar"><img src="{{ user.avatar(128) }}"></td>
+            <td class="aboutme avatar"><img src="{{ user.avatar(128) }}" alt="User Avatar"></td>
             <td class="aboutme">
                 <h3 class="aboutme">User: {{ user.username }}</h3>
                 {% if user.about_me %}<p><span class="aboutme">{{ user.about_me }}</span></p>{% endif %}

@@ -1,6 +1,4 @@
 {% extends "base.html" %}
-{% import 'bootstrap/wtf.html' as wtf %}
-
 {% include '_post_table_scripts.html' %}
 
 {% block app_content %}
@@ -27,6 +25,9 @@
         </div>
     {% endif %}
 
+    {% if explore %}
+        <h3>Explore all of the blog posts: </h3>
+    {% endif %}
     {% include '_post_table.html' %}
     <br>
     {% include '_new_old_buttons.html' %}

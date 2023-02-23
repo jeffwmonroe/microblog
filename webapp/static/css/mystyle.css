@@ -21,6 +21,10 @@ h1 {
   color: purple;
   font-style: italic;
 }
+.blog_name_ref {
+  font-style: italic;
+  text-decoration: underline;
+}
 i {
   font-style: italic;
 }

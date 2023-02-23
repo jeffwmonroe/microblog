@@ -2,7 +2,7 @@
     <script>
         window.addEventListener('load', function () {
             console.log("window load function:")
-            let page_url = new URL(window.location);
+
             let page = Number({{ page }});
             if (!page) {
                 console.log("    no page found")
@@ -20,19 +20,14 @@
                 console.log("    no max pages found")
                 max_pages= 1
             }
+            let username;
             {% if user %}
-                let username = String( '{{ user.username }}' );
-                if (!username) {
-                    console.log("    no user found")
-                    username= None
-                }
-            {% else %}
-                username=""
+                username = String( '{{ user.username }}' );
             {% endif %}
 
-            sessionStorage.setItem("page", page)
+            sessionStorage.setItem("page", String(page))
             sessionStorage.setItem("others", others)
-            sessionStorage.setItem("max_pages", max_pages)
+            sessionStorage.setItem("max_pages", String(max_pages))
             sessionStorage.setItem("username", username)
 
             checkitems();
@@ -48,30 +43,19 @@
 
             if ( page > max_pages ) {
                 page = max_pages;
-                sessionStorage.setItem("page", page)
+                sessionStorage.setItem("page", String(page))
             }
-            if ( page === 1 ) {
-                document.getElementById("newer_button").disabled=true;
-            } else {
-                document.getElementById("newer_button").disabled=false;
-            }
+            document.getElementById("newer_button").disabled = page === 1;
             if (document.getElementById("others_check")) {
-                if (others === "yes") {
-                    document.getElementById("others_check").checked = true;
-                } else {
-                    document.getElementById("others_check").checked = false;
-                }
+                document.getElementById("others_check").checked = others === "yes";
             }
-            if ( page === max_pages ){
-                 document.getElementById("older_button").disabled=true;
-            } else {
-                document.getElementById("older_button").disabled=false;
-            }
+            document.getElementById("older_button").disabled = page === max_pages;
             console.log("check item " + page + " : " + others + " : " + max_pages)
         }
+
         async function loadPosts(page, others) {
             console.log("Loading posts")
-            username = sessionStorage.getItem("username")
+            let username = sessionStorage.getItem("username")
 
             let myurl = new URL("http://127.0.0.1:5000/post_table");
             myurl.searchParams.append("others", others)
@@ -82,8 +66,8 @@
             let myTextJSON = await myObject.text();
 
             let myDict = JSON.parse(myTextJSON)
-            max_pages = myDict['max_pages']
-            my_html = myDict['html']
+            let max_pages = myDict['max_pages']
+            let my_html = myDict['html']
 
             sessionStorage.setItem("max_pages", max_pages)
 
@@ -94,7 +78,7 @@
 
         function othersCheckCallback() {
             let val = document.getElementById("others_check").checked;
-            let others="no"
+            let others
             if (val){
                 others = "yes";
             } else {
@@ -106,19 +90,19 @@
         }
         function newerPosts(){
             let page = Number(sessionStorage.getItem("page"));
-            let others = sessionStorage.getItem("others");
+            let others = String(sessionStorage.getItem("others"));
             if (page > 1) {
                 page = page - 1
             }
-            sessionStorage.setItem("page", page);
+            sessionStorage.setItem("page", String(page));
             loadPosts(page, others)
 
         }
         function olderPosts(){
             let page = Number(sessionStorage.getItem("page"));
-            let others = sessionStorage.getItem("others");
+            let others = String(sessionStorage.getItem("others"));
             page = page + 1
-            sessionStorage.setItem("page", page);
+            sessionStorage.setItem("page", String(page));
             console.log("older posts")
             loadPosts(page, others)
             console.log("   olderPosts: after load posts")

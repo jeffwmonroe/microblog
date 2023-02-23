@@ -85,6 +85,7 @@ def explore():
                            posts=posts,
                            page=page,
                            others="all",
+                           explore=True,
                            max_pages=max_pages)
 
 
