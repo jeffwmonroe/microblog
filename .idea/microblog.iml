@@ -19,6 +19,7 @@
     <option name="TEMPLATE_FOLDERS">
       <list>
         <option value="$MODULE_DIR$/webapp/templates" />
+        <option value="$MODULE_DIR$/webapp/errors/templates" />
       </list>
     </option>
   </component>

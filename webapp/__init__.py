@@ -14,6 +14,8 @@ from flask_babel import Babel
 print('webapp ... initializing')
 webapp = Flask(__name__)
 webapp.config.from_object(Config)
+
+
 bootstrap = Bootstrap(webapp)
 mail = Mail(webapp)
 moment = Moment(webapp)
@@ -67,7 +69,10 @@ if not webapp.debug:
 def get_locale():
     return request.accept_languages.best_match( webapp.config['LANGUAGES'])
 
-from . import routes, models, errors
+from webapp.errors import bp as errors_bp
+webapp.register_blueprint(errors_bp)
+
+from . import routes, models
 
 
 
