@@ -22,7 +22,7 @@ moment = Moment(webapp)
 babel = Babel(webapp)
 
 login = LoginManager(webapp)
-login.login_view = 'login'
+login.login_view = 'auth.login'
 
 db = SQLAlchemy(webapp)
 migrate = Migrate(webapp, db)
@@ -71,6 +71,9 @@ def get_locale():
 
 from webapp.errors import bp as errors_bp
 webapp.register_blueprint(errors_bp)
+
+from webapp.auth import bp as auth_bp
+webapp.register_blueprint(auth_bp, url_prefix='/auth')
 
 from . import routes, models
 

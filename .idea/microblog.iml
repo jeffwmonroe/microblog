@@ -20,6 +20,7 @@
       <list>
         <option value="$MODULE_DIR$/webapp/templates" />
         <option value="$MODULE_DIR$/webapp/errors/templates" />
+        <option value="$MODULE_DIR$/webapp/auth/templates" />
       </list>
     </option>
   </component>
