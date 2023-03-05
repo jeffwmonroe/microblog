@@ -10,7 +10,7 @@
             <th class="user_list_cell">About User</th></tr>
         {% for user in users %}
             <tr class="user_list_row">
-                <td class="user_list_cell"><a href={{ url_for('user', username=user.username) }} >{{ user.username }}</a></td>
+                <td class="user_list_cell"><a href={{ url_for('main.user', username=user.username) }} >{{ user.username }}</a></td>
                 <td class="user_list_cell user_list_nums">{{ user.followers.count() }}</td>
                 <td class="user_list_cell user_list_nums">{{ user.user_posts().count() }}</td>
                 <td class="user_list_cell">{% if user.about_me %}

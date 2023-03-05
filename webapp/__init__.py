@@ -15,7 +15,6 @@ print('webapp ... initializing')
 webapp = Flask(__name__)
 webapp.config.from_object(Config)
 
-
 bootstrap = Bootstrap(webapp)
 mail = Mail(webapp)
 moment = Moment(webapp)
@@ -43,10 +42,10 @@ if not webapp.debug:
         secure = None
         if webapp.config['MAIL_USE_TLS']:
             secure = ()
-        mail_handler = SMTPHandler(  mailhost=(webapp.config['MAIL_SERVER'], webapp.config['MAIL_PORT']),
-                                     fromaddr='no-reply@' + webapp.config['MAIL_SERVER'],
-                                     toaddrs=webapp.config['ADMINS'], subject='Microblog Failure',
-                                     credentials=auth, secure=secure)
+        mail_handler = SMTPHandler(mailhost=(webapp.config['MAIL_SERVER'], webapp.config['MAIL_PORT']),
+                                   fromaddr='no-reply@' + webapp.config['MAIL_SERVER'],
+                                   toaddrs=webapp.config['ADMINS'], subject='Microblog Failure',
+                                   credentials=auth, secure=secure)
         mail_handler.setLevel(logging.ERROR)
         webapp.logger.addHandler(mail_handler)
 
@@ -65,17 +64,25 @@ if not webapp.debug:
     webapp.logger.setLevel(logging.INFO)
     webapp.logger.info('Microblog startup')
 
+
 @babel.localeselector
 def get_locale():
-    return request.accept_languages.best_match( webapp.config['LANGUAGES'])
+    return request.accept_languages.best_match(webapp.config['LANGUAGES'])
+
+##############################################################################
+#                      Blueprints
 
 from webapp.errors import bp as errors_bp
+
 webapp.register_blueprint(errors_bp)
 
 from webapp.auth import bp as auth_bp
+
 webapp.register_blueprint(auth_bp, url_prefix='/auth')
 
-from . import routes, models
+from . import models
+from .main import routes
 
+from webapp.main import bp as main_bp
 
-
+webapp.register_blueprint(main_bp)

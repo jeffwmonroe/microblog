@@ -5,7 +5,7 @@
 
             <span class="timestamp">{{ moment(post.timestamp).fromNow() }}</span>
         {% if current_user.username != post.author.username %}
-            <span class="blog_name_ref"><a href="{{  url_for('user', username=post.author.username) }}"> {{ post.author.username }} </a></span>
+            <span class="blog_name_ref"><a href="{{  url_for('main.user', username=post.author.username) }}"> {{ post.author.username }} </a></span>
         {% else %}
             <span class="blogname">{{ post.author.username }}</span>
         {% endif %}

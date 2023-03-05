@@ -1,6 +1,6 @@
 from webapp import db, webapp
 from flask import render_template, flash, redirect, url_for, request
-from webapp.forms import EditProfileForm, EmptyForm, PostForm
+from webapp.main.forms import EditProfileForm, EmptyForm, PostForm
 
 from flask_login import current_user, login_required
 from webapp.models import User, Post
@@ -8,7 +8,7 @@ from webapp.models import User, Post
 from datetime import datetime
 
 from flask_babel import _
-
+from webapp.main import bp
 
 def get_page_list(user=None, others="yes", page=1):
     print("get_page_list:")
@@ -45,8 +45,8 @@ def get_page_list(user=None, others="yes", page=1):
     return [page, others, max_pages, posts]
 
 
-@webapp.route('/', methods=['GET', 'POST'])
-@webapp.route('/index', methods=['GET', 'POST'])
+@bp.route('/', methods=['GET', 'POST'])
+@bp.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
     form = PostForm()
@@ -58,7 +58,7 @@ def index():
         db.session.add(post)
         db.session.commit()
         flash(_('Your post is now live!'))
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
 
     page, others, max_pages, posts = get_page_list(user=current_user,
                                                    others="yes",
@@ -75,7 +75,7 @@ def index():
                            max_pages=max_pages)
 
 
-@webapp.route('/explore')
+@bp.route('/explore')
 @login_required
 def explore():
     page, others, max_pages, posts = get_page_list(user=None,
@@ -90,7 +90,7 @@ def explore():
                            max_pages=max_pages)
 
 
-@webapp.route('/user/<username>')
+@bp.route('/user/<username>')
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
@@ -107,14 +107,14 @@ def user(username):
                            form=form)
 
 
-@webapp.before_request
+@bp.before_request
 def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
 
 
-@webapp.route('/edit_profile', methods=['GET', 'POST'])
+@bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
     form = EditProfileForm(current_user.username)
@@ -123,7 +123,7 @@ def edit_profile():
         current_user.about_me = form.about_me.data
         db.session.commit()
         flash('Your changes have been saved.')
-        return redirect(url_for('edit_profile'))
+        return redirect(url_for('main.edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
@@ -131,7 +131,7 @@ def edit_profile():
                            form=form)
 
 
-@webapp.route('/user_list')
+@bp.route('/user_list')
 @login_required
 def user_list():
     users = User.query.all()
@@ -139,7 +139,7 @@ def user_list():
     return render_template('user_list.html', users=users)
 
 
-@webapp.route('/follow/<username>', methods=['POST'])
+@bp.route('/follow/<username>', methods=['POST'])
 @login_required
 def follow(username):
     form = EmptyForm()
@@ -147,19 +147,19 @@ def follow(username):
         user = User.query.filter_by(username=username).first()
         if user is None:
             flash('User {} not found.'.format(username))
-            return redirect(url_for('index'))
+            return redirect(url_for('main.index'))
         if user == current_user:
             flash('You cannot follow yourself!')
-            return redirect(url_for('user', username=username))
+            return redirect(url_for('main.user', username=username))
         current_user.follow(user)
         db.session.commit()
         flash('You are following {}!'.format(username))
-        return redirect(url_for('user', username=username))
+        return redirect(url_for('main.user', username=username))
     else:
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
 
 
-@webapp.route('/unfollow/<username>', methods=['POST'])
+@bp.route('/unfollow/<username>', methods=['POST'])
 @login_required
 def unfollow(username):
     form = EmptyForm()
@@ -167,24 +167,24 @@ def unfollow(username):
         user = User.query.filter_by(username=username).first()
         if user is None:
             flash('User {} not found.'.format(username))
-            return redirect(url_for('index'))
+            return redirect(url_for('main.index'))
         if user == current_user:
             flash('You cannot unfollow yourself!')
-            return redirect(url_for('user', username=username))
+            return redirect(url_for('main.user', username=username))
         current_user.unfollow(user)
         db.session.commit()
         flash('You are not following {}.'.format(username))
-        return redirect(url_for('user', username=username))
+        return redirect(url_for('main.user', username=username))
     else:
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
 
 
-@webapp.route('/post_table', methods=['GET'])
+@bp.route('/post_table', methods=['GET'])
 @login_required
 def get_post_table():
     print('Chilling in get_post table')
     page = request.args.get('page', 1, type=int)
-    # c_others = "yes" if webapp.config['BLOG_SHOW_OTHERS'] else "no"
+
     others = request.args.get('others', "yes", type=str)
     username = request.args.get('username', None, type=str)
 
